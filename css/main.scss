@@ -2,3 +2,18 @@
 @import 'reset';
 
 // MAIN
+.gameboard-container {
+    height: 500px;
+    width: 500px;
+    border: 1px solid red;
+    .square-container {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        .square {
+            border: 1px solid black;
+        }
+    }
+}

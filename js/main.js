@@ -21,7 +21,36 @@ const gameBoard = (function () {
         }
     }
 
-    return { gameboardContainer, gameBoardArray, displayBoard };
-})();
+    // Player input
+    gameBoardArray[0][0] = 'X';
+    gameBoardArray[1][0] = 'X';
+    gameBoardArray[2][0] = 'X';
 
-gameBoard.displayBoard();
+    // Win Logic
+    function gameLogic() {
+
+            //Horizontal
+        if (gameBoardArray[0][0] === 'X' && gameBoardArray[0][1] === 'X' && gameBoardArray[0][2] === 'X' ||
+            gameBoardArray[1][0] === 'X' && gameBoardArray[1][1] === 'X' && gameBoardArray[1][2] === 'X' ||
+            gameBoardArray[2][0] === 'X' && gameBoardArray[2][1] === 'X' && gameBoardArray[2][2] === 'X' ||
+
+            // Vertical
+            gameBoardArray[0][0] === 'X' && gameBoardArray[1][0] === 'X' && gameBoardArray[2][0] === 'X' ||
+            gameBoardArray[0][1] === 'X' && gameBoardArray[1][1] === 'X' && gameBoardArray[2][1] === 'X' ||
+            gameBoardArray[0][2] === 'X' && gameBoardArray[1][2] === 'X' && gameBoardArray[2][2] === 'X' ||
+
+            // Diagonal
+            gameBoardArray[0][0] === 'X' && gameBoardArray[1][1] === 'X' && gameBoardArray[2][2] === 'X' ||
+            gameBoardArray[0][2] === 'X' && gameBoardArray[1][2] === 'X' && gameBoardArray[2][0] === 'X'
+        ) {
+            console.log('Player won!');
+        } else {
+            console.log('player lost!');
+        }
+    }
+
+    displayBoard();
+    gameLogic();
+
+    // return { gameboardContainer, gameBoardArray, displayBoard, gameLogic };
+})();

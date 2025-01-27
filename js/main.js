@@ -37,14 +37,18 @@ const gameBoard = (function () {
     // Player Input Event
     function playerInput(targetItem, rowIndex, columnIndex) {
         targetItem.addEventListener('click', (e) => {
-            console.log(e.target);
-            console.table(gameBoardArray);
 
             // Input player's Mark on UI
             targetItem.textContent = playerTurn;
 
+            // Push player's input in gameBoardArray
+            gameBoardArray[rowIndex][columnIndex] = playerTurn;
+            console.log({playerTurn});
+
             // Player's Turn
             changePlayerTurn();
+
+            console.table(gameBoardArray);
         });
     }
 
@@ -56,11 +60,6 @@ const gameBoard = (function () {
             playerTurn = playerX;
         }
     }
-
-    // Player input
-    gameBoardArray[0][0] = 'X';
-    gameBoardArray[1][0] = 'X';
-    gameBoardArray[2][0] = 'X';
 
     // Win Logic
     function gameLogic() {

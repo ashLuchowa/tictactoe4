@@ -36,25 +36,28 @@ const gameBoard = (function () {
 
     // Player Input Event
     function playerInput(targetItem, rowIndex, columnIndex) {
-        targetItem.addEventListener('click', (e) => {
+        targetItem.addEventListener('click', () => {
 
-            // Input player's Mark on UI
-            targetItem.textContent = playerTurn;
+            if (!targetItem.textContent) {
+                // Input player's Mark on UI
+                targetItem.textContent = playerTurn;
 
-            // Push player's input in gameBoardArray
-            gameBoardArray[rowIndex][columnIndex] = playerTurn;
-            console.log({playerTurn});
+                // Push player's input in gameBoardArray
+                gameBoardArray[rowIndex][columnIndex] = playerTurn;
+                console.log({ playerTurn });
 
-            // Player's Turn
-            changePlayerTurn();
-
-            console.table(gameBoardArray);
+                // Change player's turn
+                changePlayerTurn();
+                console.table(gameBoardArray);
+            } else {
+                return targetItem.textContent;
+            }
         });
     }
 
     // Players Turn
     function changePlayerTurn() {
-        if(playerTurn === playerX) {
+        if (playerTurn === playerX) {
             playerTurn = playerY;
         } else {
             playerTurn = playerX;

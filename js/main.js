@@ -4,14 +4,16 @@ const gameBoard = (function () {
     const gameBoardArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
 
     // Create Players
-    function createPlayer(name) {
-        const playerMark = name;
-        return { name, playerMark };
+    function createPlayer(userMarker) {
+        let userScore = 0;
+        const getScore = () => userScore;
+        const giveScore = () => userScore++;
+        return {userMarker, giveScore, getScore};
     }
 
     // Players
-    const playerX = 'X';
-    const playerY = 'Y';
+    const playerX = createPlayer('X');
+    const playerO = createPlayer('O');
 
     let playerTurn = playerX;
 
@@ -24,7 +26,6 @@ const gameBoard = (function () {
             for (let j = 0; j < gameBoardArray[i].length; j++) {
                 const square = document.createElement('div');
                 square.classList.add('square');
-                // square.textContent = gameBoardArray[i][j];
 
                 squareDiv.appendChild(square);
                 gameboardContainer.appendChild(squareDiv);
@@ -40,13 +41,10 @@ const gameBoard = (function () {
 
             if (!targetItem.textContent) {
                 // Input player's Mark on UI
-                targetItem.textContent = playerTurn;
+                targetItem.textContent = playerTurn.userMarker;
 
                 // Push player's input in gameBoardArray
                 gameBoardArray[rowIndex][columnIndex] = playerTurn;
-                console.log({ playerTurn });
-
-                console.table(gameBoardArray);
             } else {
                 return targetItem.textContent;
             }
@@ -56,16 +54,20 @@ const gameBoard = (function () {
 
             // Change player's turn
             changePlayerTurn();
+
+            console.table(gameBoardArray);
         });
     }
 
     // Players Turn
     function changePlayerTurn() {
         if (playerTurn === playerX) {
-            displayPlayer = playerX;
-            playerTurn = playerY;
+            wonPlayer = playerX;
+            displayPlayer = playerX.userMarker;
+            playerTurn = playerO;
         } else {
-            displayPlayer = playerY;
+            wonPlayer = playerO;
+            displayPlayer = playerO.userMarker;
             playerTurn = playerX;
         }
     }
@@ -93,12 +95,16 @@ const gameBoard = (function () {
 
     // Win Function
     function winUI() {
-        let winResult = confirm(`${displayPlayer} has won! Continue?`);
+        let winResult = confirm(`Player ${displayPlayer} has won! Continue?`);
         if(winResult === true) {
+            wonPlayer.giveScore();
             resetBoard();
+            console.log(playerX.getScore());
+            console.log(playerO.getScore());
         } else {
-            alert('You chose not to continue');
+            resetBoard();
         }
+        console.table(gameBoardArray);
     }
 
     // Reset Function
@@ -107,7 +113,6 @@ const gameBoard = (function () {
             for (let j = 0; j < gameBoardArray[i].length; j++) {
                 // Reset Array
                 gameBoardArray[i][j] = '';
-                console.table(gameBoardArray);
 
                 //Reset UI
                 const squares = document.querySelectorAll('.square');
@@ -121,5 +126,5 @@ const gameBoard = (function () {
     displayBoard();
     createPlayer();
 
-    // return { gameboardContainer, gameBoardArray, displayBoard, gameLogic };
+    return { gameboardContainer, gameBoardArray, displayBoard, gameLogic, playerX, playerO };
 })();

@@ -73,13 +73,17 @@ const gameBoard = (function () {
         scoreElements.playerXContainer.appendChild(playerScoreX);
         scoreElements.playerOContainer.appendChild(playerScoreO);
 
+        playerScoreX.textContent = '0';
+        playerScoreO.textContent = '0';
+
         return { playerScoreX, playerScoreO };
     }
     const playerScoreElements = playerScoreUI();
 
     // Round UI
     function gameRoundUI() {
-        const gameRoundContainer = document.querySelector('.game-round');
+        const gameRoundContainer = document.createElement('div');
+        gameRoundContainer.classList.add('game-round');
         gameboardContainer.appendChild(gameRoundContainer);
 
         let gameRoundText = document.createElement('p');

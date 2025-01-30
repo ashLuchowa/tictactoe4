@@ -45,33 +45,36 @@ const gameBoard = (function () {
         const gameLogoText = document.createElement('h1');
         gameLogo.appendChild(gameLogoText);
         gameLogoText.textContent = 'TicTacToe';
-
-        // Player Names
-        const playerXContainer = document.createElement('div');
-        const playerOContainer = document.createElement('div');
-        playerXContainer.classList.add('player-x');
-        playerOContainer.classList.add('player-o');
-        const playerNameX = document.createElement('p');
-        const playerNameO = document.createElement('p');
-        playerXContainer.appendChild(playerNameX);
-        playerOContainer.appendChild(playerNameO);
-        gameboardContainer.appendChild(playerXContainer);
-        gameboardContainer.appendChild(playerOContainer);
-        playerNameX.textContent = `Player ${playerX.userMarker}:`;
-        playerNameO.textContent = `Player ${playerO.userMarker}:`;
-
-        return { playerXContainer, playerOContainer };
     }
     // Store returned elements
     const scoreElements = scoreInterface();
+
+    function playerNames(playerMarker) {
+        // Player Names
+        const playerContainer = document.createElement('div');
+
+        playerContainer.classList.add(`player-${playerMarker}`);
+
+        const playerName = document.createElement('p');
+
+        playerContainer.appendChild(playerName);
+        gameboardContainer.appendChild(playerContainer);
+        
+        //to be updated with input names ******************
+        playerName.textContent = `Player ${playerMarker}:`;
+
+        return { playerContainer };
+    }
+    const playerNameX = playerNames('x');
+    const playerNameO = playerNames('o');
 
     // Score UI
     function playerScoreUI() {
         let playerScoreX = document.createElement('p');
         let playerScoreO = document.createElement('p');
 
-        scoreElements.playerXContainer.appendChild(playerScoreX);
-        scoreElements.playerOContainer.appendChild(playerScoreO);
+        playerNameX.playerContainer.appendChild(playerScoreX);
+        playerNameO.playerContainer.appendChild(playerScoreO);
 
         playerScoreX.textContent = playerX.score;
         playerScoreO.textContent = playerO.score;
@@ -261,11 +264,11 @@ const gameMenu = (function() {
         submitBtn.addEventListener('click', (e) => {
         e.preventDefault();
         
-        const result1 = player1MenuElement.playerInput.value;
-        console.log({result1});
-
-        const result2 = player2MenuElement.playerInput.value;
-        console.log({result2});
+        const player1Name = player1MenuElement.playerInput.value;
+        const player2Name = player2MenuElement.playerInput.value;
+        
+        console.log({player1Name});
+        console.log({player2Name});
     });
     }
     

@@ -1,7 +1,7 @@
 //Gameboard object
 const gameBoard = (function () {
     const gameboardContainer = document.querySelector('.gameboard-container');
-    const gameBoardArray = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+    const gameBoardArray = [['', '', ''], ['', '', ''], ['', '', '']];
     let gameRound = 1;
 
     // Create Players
@@ -58,7 +58,7 @@ const gameBoard = (function () {
 
         playerContainer.appendChild(playerName);
         gameboardContainer.appendChild(playerContainer);
-        
+
         //to be updated with input names ******************
         playerName.textContent = `Player ${playerMarker}:`;
 
@@ -118,7 +118,7 @@ const gameBoard = (function () {
             changePlayerTurn();
         });
     }
-
+                                                                                                                           
     // Players Turn
     function changePlayerTurn() {
         if (playerTurn === playerX) {
@@ -219,13 +219,30 @@ const gameBoard = (function () {
         gameRoundElements.gameRoundText.textContent = `Round: ${gameRound}`;
     }
 
-    displayBoard();
+    // Back to Menu
+    function backToMenu() {
+        const backMenuBtn = document.createElement('button');
+        backMenuBtn.classList.add('back-menu-btn');
+        backMenuBtn.textContent = 'Back to Menu';
 
-    // return { gameboardContainer, gameBoardArray, displayBoard, gameLogic };
+        gameboardContainer.appendChild(backMenuBtn);
+
+        backMenuBtn.addEventListener('click', () => {
+            menuPageElement.menuContainer.style.display = 'flex';
+            menuPageElement.menuContainer.style.opacity = 100;
+
+            resetHandlers();
+            resetBoard();
+        });
+    }
+
+    displayBoard();
+    backToMenu();
+
 })();
 
 // Menu Page
-const gameMenu = (function() {
+const gameMenu = (function () {
     //Outer form container
     const menuContainer = document.querySelector('.menu-page');
     const playerForm = document.createElement('form');
@@ -235,10 +252,10 @@ const gameMenu = (function() {
     function createPlayerMenu(playerNumber) {
         const playerContainer = document.createElement('div');
         playerContainer.classList.add(`player${playerNumber}-container`);
-        
+
         const playerLabel = document.createElement('label');
         playerLabel.textContent = `Player ${playerNumber}: `;
-    
+
         const playerInput = document.createElement('input');
         playerInput.placeholder = 'Enter name...';
 
@@ -261,27 +278,38 @@ const gameMenu = (function() {
 
         // Submit Event Listener
         submitBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        
-        const player1Name = player1MenuElement.playerInput.value;
-        const player2Name = player2MenuElement.playerInput.value;
+            e.preventDefault();
 
-        let player1Box = document.querySelector('.player-x p');
-        let player2Box = document.querySelector('.player-o p');
+            const player1Name = player1MenuElement.playerInput.value;
+            const player2Name = player2MenuElement.playerInput.value;
 
-        if(player1MenuElement.playerInput.value === '' || player1MenuElement.playerInput.value === null) {
-            player1Box.textContent = `Player x: `;
-        } else {
-            player1Box.textContent = `${player1Name}: `;
-        }
+            let player1Box = document.querySelector('.player-x p');
+            let player2Box = document.querySelector('.player-o p');
 
-        if(player2MenuElement.playerInput.value === '' || player2MenuElement.playerInput.value === null) {
-            player2Box.textContent = `Player o: `;
-        } else {
-            player2Box.textContent = `${player2Name}: `;
-        }
-    });
+            if (player1MenuElement.playerInput.value === '' || player1MenuElement.playerInput.value === null) {
+                player1Box.textContent = `Player x: `;
+            } else {
+                player1Box.textContent = `${player1Name}: `;
+            }
+
+            if (player2MenuElement.playerInput.value === '' || player2MenuElement.playerInput.value === null) {
+                player2Box.textContent = `Player o: `;
+            } else {
+                player2Box.textContent = `${player2Name}: `;
+            }
+
+            function removeMenuPage() {
+                menuContainer.style.display = 'none';
+            }
+
+            menuContainer.style.opacity = 0;
+            setTimeout(removeMenuPage, 550);
+        });
     }
-    
+
     submitPlayerNames();
+
+    return { menuContainer };
 }());
+
+const menuPageElement = gameMenu;

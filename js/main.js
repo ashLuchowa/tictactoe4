@@ -5,16 +5,16 @@ const gameBoard = (function () {
     let gameRound = 1;
 
     // Create Players
-    function createPlayer(userMarker) {
+    function createPlayer(userMarker, score) {
         let userScore = 0;
         const getScore = () => userScore;
         const giveScore = () => userScore++;
-        return { userScore, userMarker, giveScore, getScore };
+        return { userScore, userMarker, giveScore, getScore, score };
     }
 
     // Players
-    const playerX = createPlayer('X');
-    const playerO = createPlayer('O');
+    const playerX = createPlayer('X', 0);
+    const playerO = createPlayer('O', 0);
 
     let playerTurn = playerX;
 
@@ -73,8 +73,8 @@ const gameBoard = (function () {
         scoreElements.playerXContainer.appendChild(playerScoreX);
         scoreElements.playerOContainer.appendChild(playerScoreO);
 
-        playerScoreX.textContent = '0';
-        playerScoreO.textContent = '0';
+        playerScoreX.textContent = playerX.score;
+        playerScoreO.textContent = playerO.score;
 
         return { playerScoreX, playerScoreO };
     }
@@ -155,11 +155,15 @@ const gameBoard = (function () {
         if (winResult === true) {
             if (displayPlayer === 'X') {
                 playerX.giveScore();
-                playerScoreElements.playerScoreX.textContent = playerX.getScore();
+                playerScoreElements.playerScoreX.textContent = ++playerX.score;
+                gameRoundElements.gameRoundText.textContent = `Round: ${++gameRound}`;
+                gameEnds();
                 resetBoard();
             } else {
                 playerO.giveScore();
-                playerScoreElements.playerScoreO.textContent = playerO.getScore();
+                playerScoreElements.playerScoreO.textContent = ++playerO.score;
+                gameRoundElements.gameRoundText.textContent = `Round: ${++gameRound}`;
+                gameEnds();
                 resetBoard();
             }
         } else {
@@ -181,7 +185,36 @@ const gameBoard = (function () {
                 });
             }
         }
-        gameRoundElements.gameRoundText.textContent = `Round: ${++gameRound}`;
+    }
+
+    // Evaluate winner
+    function gameEnds() {
+        //Best of 5
+        if (gameRound >= 3) {
+            if (playerX.score >= 3) {
+                alert('playerX has won the match');
+                resetHandlers();
+            } else if (playerO.score >= 3) {
+                alert('playerO has won the match');
+                resetHandlers();
+            }
+        }
+        console.log(playerX.score);
+        console.log(playerO.score);
+    }
+
+    // Reset Handles
+    function resetHandlers() {
+        // Reset players' scores
+        playerX.score = 0;
+        playerO.score = 0;
+
+        playerScoreElements.playerScoreX.textContent = playerX.score;
+        playerScoreElements.playerScoreO.textContent = playerO.score;
+
+        // Reset Round
+        gameRound = 0;
+        gameRoundElements.gameRoundText.textContent = `Round: ${gameRound}`;
     }
 
     displayBoard();

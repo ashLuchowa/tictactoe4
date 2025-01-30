@@ -7,10 +7,9 @@ const gameBoard = (function () {
     // Create Players
     function createPlayer(userMarker) {
         let userScore = 0;
-        let userWin = false;
         const getScore = () => userScore;
         const giveScore = () => userScore++;
-        return {userScore, userMarker, giveScore, getScore, userWin};
+        return { userScore, userMarker, giveScore, getScore };
     }
 
     // Players
@@ -61,12 +60,8 @@ const gameBoard = (function () {
         playerNameX.textContent = `Player ${playerX.userMarker}:`;
         playerNameO.textContent = `Player ${playerO.userMarker}:`;
 
-        // Game round
-        gameRoundUI();
-
         return { playerXContainer, playerOContainer };
     }
-
     // Store returned elements
     const scoreElements = scoreInterface();
 
@@ -80,18 +75,21 @@ const gameBoard = (function () {
 
         return { playerScoreX, playerScoreO };
     }
+    const playerScoreElements = playerScoreUI();
 
     // Round UI
     function gameRoundUI() {
-        const gameRoundContainer = document.createElement('div');
+        const gameRoundContainer = document.querySelector('.game-round');
         gameboardContainer.appendChild(gameRoundContainer);
-        gameRoundContainer.classList.add('game-round');
+
         let gameRoundText = document.createElement('p');
         gameRoundContainer.appendChild(gameRoundText);
-        gameRoundText.textContent = `Round ${gameRound}`;
-    }
 
-    const playerScoreElements = playerScoreUI();
+        gameRoundText.textContent = `Round: ${gameRound}`;
+
+        return { gameRoundText };
+    }
+    const gameRoundElements = gameRoundUI();
 
     // Player Input Event
     function playerInput(targetItem, rowIndex, columnIndex) {
@@ -150,8 +148,8 @@ const gameBoard = (function () {
     // Win Function
     function winUI() {
         let winResult = confirm(`Player ${displayPlayer} has won! Continue?`);
-        if(winResult === true) {
-            if(displayPlayer === 'X') {
+        if (winResult === true) {
+            if (displayPlayer === 'X') {
                 playerX.giveScore();
                 playerScoreElements.playerScoreX.textContent = playerX.getScore();
                 resetBoard();
@@ -167,7 +165,7 @@ const gameBoard = (function () {
 
     // Reset Function
     function resetBoard() {
-        for(let i = 0; i < gameBoardArray.length; i++) {
+        for (let i = 0; i < gameBoardArray.length; i++) {
             for (let j = 0; j < gameBoardArray[i].length; j++) {
                 // Reset Array
                 gameBoardArray[i][j] = '';
@@ -179,13 +177,10 @@ const gameBoard = (function () {
                 });
             }
         }
-        playerX.userWin = false;
-        playerO.userWin = false;
+        gameRoundElements.gameRoundText.textContent = `Round: ${++gameRound}`;
     }
 
     displayBoard();
-    createPlayer();
-    playerScoreUI();
 
-    return { gameboardContainer, gameBoardArray, displayBoard, gameLogic, playerX, playerO, gameRound };
+    // return { gameboardContainer, gameBoardArray, displayBoard, gameLogic };
 })();

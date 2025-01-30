@@ -62,12 +62,7 @@ const gameBoard = (function () {
         playerNameO.textContent = `Player ${playerO.userMarker}:`;
 
         // Game round
-        const gameRoundContainer = document.createElement('div');
-        gameboardContainer.appendChild(gameRoundContainer);
-        gameRoundContainer.classList.add('game-round');
-        let gameRoundText = document.createElement('p');
-        gameRoundContainer.appendChild(gameRoundText);
-        gameRoundText.textContent = `Round ${gameRound}`;
+        gameRoundUI();
 
         return { playerXContainer, playerOContainer };
     }
@@ -83,10 +78,17 @@ const gameBoard = (function () {
         scoreElements.playerXContainer.appendChild(playerScoreX);
         scoreElements.playerOContainer.appendChild(playerScoreO);
 
-        // playerScoreX.textContent = playerX.getScore();
-        // playerScoreO.textContent = playerO.getScore();
-
         return { playerScoreX, playerScoreO };
+    }
+
+    // Round UI
+    function gameRoundUI() {
+        const gameRoundContainer = document.createElement('div');
+        gameboardContainer.appendChild(gameRoundContainer);
+        gameRoundContainer.classList.add('game-round');
+        let gameRoundText = document.createElement('p');
+        gameRoundContainer.appendChild(gameRoundText);
+        gameRoundText.textContent = `Round ${gameRound}`;
     }
 
     const playerScoreElements = playerScoreUI();

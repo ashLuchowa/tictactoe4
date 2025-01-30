@@ -132,6 +132,7 @@ const gameBoard = (function () {
 
     // Win Logic
     function gameLogic() {
+        let boardFull = true;
 
         //Horizontal
         if (gameBoardArray[0][0] === playerTurn && gameBoardArray[0][1] === playerTurn && gameBoardArray[0][2] === playerTurn ||
@@ -148,6 +149,20 @@ const gameBoard = (function () {
             gameBoardArray[0][2] === playerTurn && gameBoardArray[1][2] === playerTurn && gameBoardArray[2][0] === playerTurn
         ) {
             setTimeout(winUI, 250);
+        }
+
+        // check if board is full
+        for (let i = 0; i < gameBoardArray.length; i++) {
+            for (let j = 0; j < gameBoardArray[i].length; j++) {
+                if(gameBoardArray[i][j] === '') {
+                    boardFull = false;
+                }
+            }
+        }
+
+        if(boardFull) {
+            alert('Game is a tie');
+            resetBoard();
         }
     }
 
@@ -201,8 +216,6 @@ const gameBoard = (function () {
                 resetHandlers();
             }
         }
-        console.log(playerX.score);
-        console.log(playerO.score);
     }
 
     // Reset Handles

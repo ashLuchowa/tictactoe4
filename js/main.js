@@ -4,15 +4,14 @@ const gameBoard = (function () {
     const gameBoardArray = [['', '', ''], ['', '', ''], ['', '', '']];
     let gameRound = 1;
 
-    // Create Players
-    function createPlayer(userMarker, score) {
-        let userScore = 0;
+    // Create Players Factory Function
+    function createPlayer(userMarker, userScore) {
         const getScore = () => userScore;
         const giveScore = () => userScore++;
-        return { userScore, userMarker, giveScore, getScore, score };
+        return { userScore, userMarker, giveScore, getScore };
     }
 
-    // Players
+    // Generate Players
     const playerX = createPlayer('X', 0);
     const playerO = createPlayer('O', 0);
 
@@ -37,8 +36,7 @@ const gameBoard = (function () {
     }
 
     // Display the scores, player names and logo
-    function scoreInterface() {
-        // Game logo
+    function gameLogo() {
         const gameLogo = document.createElement('div');
         gameLogo.classList.add('game-logo');
         gameboardContainer.appendChild(gameLogo);
@@ -46,8 +44,6 @@ const gameBoard = (function () {
         gameLogo.appendChild(gameLogoText);
         gameLogoText.textContent = 'TicTacToe';
     }
-    // Store returned elements
-    const scoreElements = scoreInterface();
 
     // Player Names UI
     function playerNames(playerMarker) {
@@ -58,9 +54,6 @@ const gameBoard = (function () {
 
         playerContainer.appendChild(playerName);
         gameboardContainer.appendChild(playerContainer);
-
-        //to be updated with input names ******************
-        playerName.textContent = `Player ${playerMarker}:`;
 
         return { playerContainer };
     }
@@ -75,8 +68,8 @@ const gameBoard = (function () {
         playerNameX.playerContainer.appendChild(playerScoreX);
         playerNameO.playerContainer.appendChild(playerScoreO);
 
-        playerScoreX.textContent = playerX.score;
-        playerScoreO.textContent = playerO.score;
+        playerScoreX.textContent = playerX.userScore;
+        playerScoreO.textContent = playerO.userScore;
 
         return { playerScoreX, playerScoreO };
     }
@@ -95,7 +88,6 @@ const gameBoard = (function () {
 
         return { gameRoundText };
     }
-    const gameRoundElements = gameRoundUI();
 
     // Player Input Event
     function playerInput(targetItem, rowIndex, columnIndex) {
@@ -118,7 +110,7 @@ const gameBoard = (function () {
             changePlayerTurn();
         });
     }
-                                                                                                                           
+
     // Players Turn
     function changePlayerTurn() {
         if (playerTurn === playerX) {
@@ -154,13 +146,13 @@ const gameBoard = (function () {
         // check if board is full
         for (let i = 0; i < gameBoardArray.length; i++) {
             for (let j = 0; j < gameBoardArray[i].length; j++) {
-                if(gameBoardArray[i][j] === '') {
+                if (gameBoardArray[i][j] === '') {
                     boardFull = false;
                 }
             }
         }
 
-        if(boardFull) {
+        if (boardFull) {
             alert('Game is a tie');
             resetBoard();
         }
@@ -172,13 +164,13 @@ const gameBoard = (function () {
         if (winResult === true) {
             if (displayPlayer === 'X') {
                 playerX.giveScore();
-                playerScoreElements.playerScoreX.textContent = ++playerX.score;
+                playerScoreElements.playerScoreX.textContent = ++playerX.userScore;
                 gameRoundElements.gameRoundText.textContent = `Round: ${++gameRound}`;
                 gameEnds();
                 resetBoard();
             } else {
                 playerO.giveScore();
-                playerScoreElements.playerScoreO.textContent = ++playerO.score;
+                playerScoreElements.playerScoreO.textContent = ++playerO.userScore;
                 gameRoundElements.gameRoundText.textContent = `Round: ${++gameRound}`;
                 gameEnds();
                 resetBoard();
@@ -208,10 +200,10 @@ const gameBoard = (function () {
     function gameEnds() {
         //Best of 5
         if (gameRound >= 3) {
-            if (playerX.score >= 3) {
+            if (playerX.userScore >= 3) {
                 alert('playerX has won the match');
                 resetHandlers();
-            } else if (playerO.score >= 3) {
+            } else if (playerO.userScore >= 3) {
                 alert('playerO has won the match');
                 resetHandlers();
             }
@@ -221,11 +213,11 @@ const gameBoard = (function () {
     // Reset Handles
     function resetHandlers() {
         // Reset players' scores
-        playerX.score = 0;
-        playerO.score = 0;
+        playerX.userScore = 0;
+        playerO.userScore = 0;
 
-        playerScoreElements.playerScoreX.textContent = playerX.score;
-        playerScoreElements.playerScoreO.textContent = playerO.score;
+        playerScoreElements.playerScoreX.textContent = playerX.userScore;
+        playerScoreElements.playerScoreO.textContent = playerO.userScore;
 
         // Reset Round
         gameRound = 0;
@@ -249,6 +241,8 @@ const gameBoard = (function () {
         });
     }
 
+    gameLogo();
+    const gameRoundElements = gameRoundUI();
     displayBoard();
     backToMenu();
 
@@ -290,34 +284,37 @@ const gameMenu = (function () {
         playerForm.appendChild(submitBtn);
 
         // Submit Event Listener
-        submitBtn.addEventListener('click', (e) => {
-            e.preventDefault();
+        submitBtn.addEventListener('click', (playerNameInput))
+    }
 
-            const player1Name = player1MenuElement.playerInput.value;
-            const player2Name = player2MenuElement.playerInput.value;
+    // Input Player Names
+    function playerNameInput(e) {
+        e.preventDefault();
 
-            let player1Box = document.querySelector('.player-x p');
-            let player2Box = document.querySelector('.player-o p');
+        const player1Name = player1MenuElement.playerInput.value;
+        const player2Name = player2MenuElement.playerInput.value;
 
-            if (player1MenuElement.playerInput.value === '' || player1MenuElement.playerInput.value === null) {
-                player1Box.textContent = `Player x: `;
-            } else {
-                player1Box.textContent = `${player1Name}: `;
-            }
+        let player1Box = document.querySelector('.player-x p');
+        let player2Box = document.querySelector('.player-o p');
 
-            if (player2MenuElement.playerInput.value === '' || player2MenuElement.playerInput.value === null) {
-                player2Box.textContent = `Player o: `;
-            } else {
-                player2Box.textContent = `${player2Name}: `;
-            }
+        if (player1MenuElement.playerInput.value === '' || player1MenuElement.playerInput.value === null) {
+            player1Box.textContent = `Player x: `;
+        } else {
+            player1Box.textContent = `${player1Name}: `;
+        }
 
-            function removeMenuPage() {
-                menuContainer.style.display = 'none';
-            }
+        if (player2MenuElement.playerInput.value === '' || player2MenuElement.playerInput.value === null) {
+            player2Box.textContent = `Player o: `;
+        } else {
+            player2Box.textContent = `${player2Name}: `;
+        }
 
-            menuContainer.style.opacity = 0;
-            setTimeout(removeMenuPage, 550);
-        });
+        function removeMenuPage() {
+            menuContainer.style.display = 'none';
+        }
+
+        menuContainer.style.opacity = 0;
+        setTimeout(removeMenuPage, 550);
     }
 
     submitPlayerNames();

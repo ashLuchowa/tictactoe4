@@ -221,3 +221,53 @@ const gameBoard = (function () {
 
     // return { gameboardContainer, gameBoardArray, displayBoard, gameLogic };
 })();
+
+// Menu Page
+const gameMenu = (function() {
+    //Outer form container
+    const menuContainer = document.querySelector('.menu-page');
+    const playerForm = document.createElement('form');
+    menuContainer.appendChild(playerForm);
+
+    // Menu Player Input UI
+    function createPlayerMenu(playerNumber) {
+        const playerContainer = document.createElement('div');
+        playerContainer.classList.add(`player${playerNumber}-container`);
+        
+        const playerLabel = document.createElement('label');
+        playerLabel.textContent = `Player ${playerNumber}: `;
+    
+        const playerInput = document.createElement('input');
+        playerInput.placeholder = 'Enter name...';
+
+        playerForm.appendChild(playerContainer);
+        playerContainer.appendChild(playerLabel);
+        playerContainer.appendChild(playerInput);
+
+        return { playerInput };
+    }
+    const player1MenuElement = createPlayerMenu(1);
+    const player2MenuElement = createPlayerMenu(2);
+
+    //Submit Button UI
+    function submitPlayerNames() {
+        const submitBtn = document.createElement('input');
+        submitBtn.textContent = 'Submit';
+        submitBtn.type = 'submit';
+
+        playerForm.appendChild(submitBtn);
+
+        // Submit Event Listener
+        submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const result1 = player1MenuElement.playerInput.value;
+        console.log({result1});
+
+        const result2 = player2MenuElement.playerInput.value;
+        console.log({result2});
+    });
+    }
+    
+    submitPlayerNames();
+}());

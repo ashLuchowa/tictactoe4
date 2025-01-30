@@ -49,12 +49,11 @@ const gameBoard = (function () {
     // Store returned elements
     const scoreElements = scoreInterface();
 
+    // Player Names UI
     function playerNames(playerMarker) {
         // Player Names
         const playerContainer = document.createElement('div');
-
         playerContainer.classList.add(`player-${playerMarker}`);
-
         const playerName = document.createElement('p');
 
         playerContainer.appendChild(playerName);
@@ -266,9 +265,21 @@ const gameMenu = (function() {
         
         const player1Name = player1MenuElement.playerInput.value;
         const player2Name = player2MenuElement.playerInput.value;
-        
-        console.log({player1Name});
-        console.log({player2Name});
+
+        let player1Box = document.querySelector('.player-x p');
+        let player2Box = document.querySelector('.player-o p');
+
+        if(player1MenuElement.playerInput.value === '' || player1MenuElement.playerInput.value === null) {
+            player1Box.textContent = `Player x: `;
+        } else {
+            player1Box.textContent = `${player1Name}: `;
+        }
+
+        if(player2MenuElement.playerInput.value === '' || player2MenuElement.playerInput.value === null) {
+            player2Box.textContent = `Player o: `;
+        } else {
+            player2Box.textContent = `${player2Name}: `;
+        }
     });
     }
     
